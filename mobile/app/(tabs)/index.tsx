@@ -11,30 +11,47 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [vehicle, setVehicle] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSearch = async () => {
-  const query = searchQuery.trim().toUpperCase();
+    const query = searchQuery.trim().toUpperCase();
 
-  if (!query || !API_URL) {
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `${API_URL}/api/vehicles/search/?query=${encodeURIComponent(query)}`
-    );
-
-    if (!response.ok) {
-      throw new Error('Vehicle not found');
+    if (!query || !API_URL) {
+      return;
     }
 
-    const vehicle = await response.json();
+    setIsLoading(true);
+    setVehicle(null);
+    setError('');
 
-    console.log('Vehicle:', vehicle);
-  } catch (error) {
-    console.error('Search failed:', error);
-  }
-};
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/vehicles/search/?query=${query}`
+      );
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Vehicle not found.');
+        }
+
+        throw new Error('Something went wrong. Please try again.');
+      }
+
+      const vehicleData = await response.json();
+
+      setVehicle(vehicleData);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to search for vehicle.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -70,6 +87,40 @@ export default function HomeScreen() {
         >
           <Text style={styles.buttonText}>Search Vehicle</Text>
         </TouchableOpacity>
+
+        {isLoading && (
+          <Text style={styles.statusText}>Searching...</Text>
+        )}
+
+        {error && (
+          <Text style={styles.errorText}>{error}</Text>
+        )}
+
+        {vehicle && (
+          <View style={styles.resultCard}>
+            <Text style={styles.resultTitle}>Vehicle Found</Text>
+
+            <Text style={styles.resultText}>
+              Registration: {vehicle.registration_number}
+            </Text>
+
+            <Text style={styles.resultText}>
+              VIN: {vehicle.vin}
+            </Text>
+
+            <Text style={styles.resultText}>
+              Make: {vehicle.make}
+            </Text>
+
+            <Text style={styles.resultText}>
+              Model: {vehicle.model}
+            </Text>
+
+            <Text style={styles.resultText}>
+              Year: {vehicle.year}
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.footer}>
@@ -80,6 +131,8 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -158,4 +211,37 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
   },
+  statusText: {
+  marginTop: 20,
+  textAlign: 'center',
+  color: '#CBD5E1',
+  fontSize: 16,
+},
+
+errorText: {
+  marginTop: 20,
+  textAlign: 'center',
+  color: '#F87171',
+  fontSize: 16,
+},
+
+resultCard: {
+  marginTop: 24,
+  padding: 20,
+  borderRadius: 16,
+  backgroundColor: '#1E293B',
+},
+
+resultTitle: {
+  marginBottom: 16,
+  fontSize: 20,
+  fontWeight: '700',
+  color: '#FFFFFF',
+},
+
+resultText: {
+  marginTop: 8,
+  fontSize: 15,
+  color: '#CBD5E1',
+},
 });
