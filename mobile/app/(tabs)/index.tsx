@@ -7,19 +7,34 @@ import {
   View,
 } from 'react-native';
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
   const query = searchQuery.trim().toUpperCase();
 
-  if (!query) {
+  if (!query || !API_URL) {
     return;
   }
 
-  console.log('Searching for:', query);
-};
+  try {
+    const response = await fetch(
+      `${API_URL}/api/vehicles/search/?query=${encodeURIComponent(query)}`
+    );
 
+    if (!response.ok) {
+      throw new Error('Vehicle not found');
+    }
+
+    const vehicle = await response.json();
+
+    console.log('Vehicle:', vehicle);
+  } catch (error) {
+    console.error('Search failed:', error);
+  }
+};
   return (
     <View style={styles.container}>
       <View style={styles.header}>
