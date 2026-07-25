@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const [error, setError] = useState('');
 
   const handleSearch = async () => {
-    const query = searchQuery.trim().toUpperCase();
+    const query = searchQuery.replace(/\s+/g, '').toUpperCase();
 
     if (!query || !API_URL) {
       return;
@@ -28,25 +28,24 @@ export default function HomeScreen() {
 
     try {
       const response = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/vehicles/search/?query=${query}`
+        `${API_URL}/api/vehicles/search/?query=${encodeURIComponent(query)}`
       );
 
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('Vehicle not found.');
+          throw new Error('No vehicle found with those details.');
         }
 
-        throw new Error('Something went wrong. Please try again.');
+        throw new Error('Unable to complete the search. Please try again.');
       }
 
       const vehicleData = await response.json();
-
       setVehicle(vehicleData);
     } catch (error) {
       setError(
         error instanceof Error
           ? error.message
-          : 'Unable to search for vehicle.'
+          : 'Something went wrong. Please try again.'
       );
     } finally {
       setIsLoading(false);
@@ -81,22 +80,35 @@ export default function HomeScreen() {
         />
 
         <TouchableOpacity
-          style={styles.button}
+          style={[
+            styles.button,
+            (!searchQuery.trim() || isLoading) && styles.buttonDisabled,
+          ]}
           onPress={handleSearch}
-          disabled={!searchQuery.trim()}
+          disabled={!searchQuery.trim() || isLoading}
+          accessibilityRole="button"
+          accessibilityLabel="Search for vehicle"
+          accessibilityState={{ disabled: !searchQuery.trim() || isLoading }}
         >
-          <Text style={styles.buttonText}>Search Vehicle</Text>
+          <Text style={styles.buttonText}>
+            {isLoading ? 'Searching...' : 'Search Vehicle'}
+          </Text>
         </TouchableOpacity>
 
         {isLoading && (
-          <Text style={styles.statusText}>Searching...</Text>
+          <View style={styles.loadingContainer}>
+            <Text style={styles.statusText}>Searching vehicle history...</Text>
+          </View>
         )}
 
-        {error && (
-          <Text style={styles.errorText}>{error}</Text>
+        {!isLoading && error && (
+          <View style={styles.errorCard}>
+            <Text style={styles.errorTitle}>Vehicle not found</Text>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
         )}
 
-        {vehicle && (
+        {!isLoading && vehicle && (
           <View style={styles.resultCard}>
             <Text style={styles.resultTitle}>Vehicle Found</Text>
 
@@ -194,10 +206,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#2563EB',
   },
 
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+
   buttonText: {
     fontSize: 16,
     fontWeight: '700',
     color: '#FFFFFF',
+  },
+
+  loadingContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+
+  errorCard: {
+    marginTop: 24,
+    padding: 20,
+    borderRadius: 16,
+    backgroundColor: '#3F1D2E',
+  },
+
+  errorTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FCA5A5',
   },
 
   footer: {
@@ -212,36 +246,34 @@ const styles = StyleSheet.create({
     color: '#64748B',
   },
   statusText: {
-  marginTop: 20,
-  textAlign: 'center',
-  color: '#CBD5E1',
-  fontSize: 16,
-},
+    fontSize: 15,
+    color: '#CBD5E1',
+  },
 
-errorText: {
-  marginTop: 20,
-  textAlign: 'center',
-  color: '#F87171',
-  fontSize: 16,
-},
+  errorText: {
+    marginTop: 8,
+    fontSize: 15,
+    lineHeight: 22,
+    color: '#FECACA',
+  },
 
-resultCard: {
-  marginTop: 24,
-  padding: 20,
-  borderRadius: 16,
-  backgroundColor: '#1E293B',
-},
+  resultCard: {
+    marginTop: 24,
+    padding: 20,
+    borderRadius: 16,
+    backgroundColor: '#1E293B',
+  },
 
-resultTitle: {
-  marginBottom: 16,
-  fontSize: 20,
-  fontWeight: '700',
-  color: '#FFFFFF',
-},
+  resultTitle: {
+    marginBottom: 16,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
 
-resultText: {
-  marginTop: 8,
-  fontSize: 15,
-  color: '#CBD5E1',
-},
+  resultText: {
+    marginTop: 8,
+    fontSize: 15,
+    color: '#CBD5E1',
+  },
 });

@@ -16,14 +16,17 @@ def search_vehicle(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    normalized_query = query.replace(" ", "").upper()
+
     vehicle = Vehicle.objects.filter(
         vin__iexact=query
     ).first()
 
     if not vehicle:
-        vehicle = Vehicle.objects.filter(
-            registration_number__iexact=query
-        ).first()
+        for candidate in Vehicle.objects.all():
+            if candidate.registration_number.replace(" ", "").upper() == normalized_query:
+                vehicle = candidate
+                break
 
     if not vehicle:
         return Response(
