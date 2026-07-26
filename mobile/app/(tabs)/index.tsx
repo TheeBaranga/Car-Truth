@@ -111,7 +111,7 @@ export default function HomeScreen() {
         {!isLoading && vehicle && (
           <View style={styles.profileCard}>
             <View style={styles.profileHeader}>
-              <Text style={styles.profileEyebrow}>MOTIVE VEHICLE PROFILE</Text>
+              <Text style={styles.profileEyebrow}>MOTI VEHICLE PROFILE</Text>
               <Text style={styles.vehicleName}>
                 {vehicle.make} {vehicle.model}
               </Text>
@@ -142,15 +142,33 @@ export default function HomeScreen() {
 
               {vehicle.events?.length > 0 ? (
                 vehicle.events.map((event: any, index: number) => (
-                  <View key={`${event.event_date}-${event.title}-${index}`} style={styles.historyEvent}>
-                    <Text style={styles.historyEventTitle}>{event.title}</Text>
-                    <Text style={styles.historyEventDate}>{event.event_date}</Text>
-                    <Text style={styles.insightSubtitle}>{event.description}</Text>
-                    {event.source && (
-                      <Text style={styles.historyEventSource}>
-                        Source: {event.source}
+                  <View key={`${event.event_date}-${event.title}-${index}`} style={styles.timelineEvent}>
+                    <View style={styles.timelineMarkerColumn}>
+                      <View style={styles.timelineMarker} />
+                      {index < vehicle.events!.length - 1 && (
+                        <View style={styles.timelineConnector} />
+                      )}
+                    </View>
+
+                    <View style={styles.timelineContent}>
+                      <Text style={styles.timelineEventType}>
+                        {event.event_type}
                       </Text>
-                    )}
+                      <Text style={styles.historyEventTitle}>{event.title}</Text>
+                      <Text style={styles.historyEventDate}>
+                        {new Date(event.event_date).toLocaleDateString('en-GB', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </Text>
+                      <Text style={styles.insightSubtitle}>{event.description}</Text>
+                      {event.source && (
+                        <Text style={styles.historyEventSource}>
+                          Source: {event.source}
+                        </Text>
+                      )}
+                    </View>
                   </View>
                 ))
               ) : (
@@ -395,14 +413,46 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  historyEvent: {
-    marginTop: 16,
-    paddingLeft: 14,
-    borderLeftWidth: 2,
-    borderLeftColor: '#475569',
+  timelineEvent: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+
+  timelineMarkerColumn: {
+    width: 20,
+    alignItems: 'center',
+  },
+
+  timelineMarker: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#94A3B8',
+    marginTop: 4,
+  },
+
+  timelineConnector: {
+    width: 1,
+    flex: 1,
+    marginTop: 6,
+    backgroundColor: '#475569',
+  },
+
+  timelineContent: {
+    flex: 1,
+    marginLeft: 12,
+    paddingBottom: 4,
+  },
+
+  timelineEventType: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: '#64748B',
   },
 
   historyEventTitle: {
+    marginTop: 4,
     fontSize: 15,
     fontWeight: '600',
     color: '#F8FAFC',
