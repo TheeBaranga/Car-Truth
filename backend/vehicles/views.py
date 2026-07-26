@@ -19,7 +19,7 @@ def search_vehicle(request):
     normalized_query = query.replace(" ", "").upper()
 
     vehicle = Vehicle.objects.filter(
-        vin__iexact=query
+    vin__iexact=normalized_query
     ).first()
 
     if not vehicle:

@@ -55,7 +55,7 @@ export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>MOTIVE</Text>
+        <Text style={styles.logo}>MOTI</Text>
         <Text style={styles.tagline}>
           Know What Moves You.
         </Text>
@@ -137,14 +137,27 @@ export default function HomeScreen() {
 
             <Text style={styles.sectionLabel}>VEHICLE INTELLIGENCE</Text>
 
-            <View style={styles.insightRow}>
-              <View>
-                <Text style={styles.insightTitle}>History</Text>
+            <View style={styles.historySection}>
+              <Text style={styles.insightTitle}>History</Text>
+
+              {vehicle.events?.length > 0 ? (
+                vehicle.events.map((event: any, index: number) => (
+                  <View key={`${event.event_date}-${event.title}-${index}`} style={styles.historyEvent}>
+                    <Text style={styles.historyEventTitle}>{event.title}</Text>
+                    <Text style={styles.historyEventDate}>{event.event_date}</Text>
+                    <Text style={styles.insightSubtitle}>{event.description}</Text>
+                    {event.source && (
+                      <Text style={styles.historyEventSource}>
+                        Source: {event.source}
+                      </Text>
+                    )}
+                  </View>
+                ))
+              ) : (
                 <Text style={styles.insightSubtitle}>
-                  History data will appear here.
+                  No history records available yet.
                 </Text>
-              </View>
-              <Text style={styles.comingSoon}>SOON</Text>
+              )}
             </View>
 
             <View style={styles.insightRow}>
@@ -376,6 +389,35 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#E2E8F0',
     textAlign: 'right',
+  },
+
+  historySection: {
+    marginTop: 20,
+  },
+
+  historyEvent: {
+    marginTop: 16,
+    paddingLeft: 14,
+    borderLeftWidth: 2,
+    borderLeftColor: '#475569',
+  },
+
+  historyEventTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#F8FAFC',
+  },
+
+  historyEventDate: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#94A3B8',
+  },
+
+  historyEventSource: {
+    marginTop: 6,
+    fontSize: 12,
+    color: '#64748B',
   },
 
   insightRow: {
