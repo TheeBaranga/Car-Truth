@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   StyleSheet,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -52,11 +53,11 @@ export default function HomeScreen() {
     }
   };
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>CAR TRUTH</Text>
+        <Text style={styles.logo}>MOTIVE</Text>
         <Text style={styles.tagline}>
-          Know the history before you buy.
+          Know What Moves You.
         </Text>
       </View>
 
@@ -64,8 +65,7 @@ export default function HomeScreen() {
         <Text style={styles.title}>Search a vehicle</Text>
 
         <Text style={styles.description}>
-          Enter a Kenyan registration number or VIN to view the vehicle's
-          history.
+          Search a registration number or VIN to understand the vehicle behind it.
         </Text>
 
         <TextInput
@@ -109,28 +109,63 @@ export default function HomeScreen() {
         )}
 
         {!isLoading && vehicle && (
-          <View style={styles.resultCard}>
-            <Text style={styles.resultTitle}>Vehicle Found</Text>
+          <View style={styles.profileCard}>
+            <View style={styles.profileHeader}>
+              <Text style={styles.profileEyebrow}>MOTIVE VEHICLE PROFILE</Text>
+              <Text style={styles.vehicleName}>
+                {vehicle.make} {vehicle.model}
+              </Text>
+              <Text style={styles.vehicleYear}>{vehicle.year}</Text>
+              <Text style={styles.registrationNumber}>
+                {vehicle.registration_number}
+              </Text>
+            </View>
 
-            <Text style={styles.resultText}>
-              Registration: {vehicle.registration_number}
-            </Text>
+            <View style={styles.divider} />
 
-            <Text style={styles.resultText}>
-              VIN: {vehicle.vin}
-            </Text>
+            <View style={styles.identityHeader}>
+              <Text style={styles.sectionLabel}>VEHICLE IDENTITY</Text>
+              <Text style={styles.verifiedLabel}>FOUND</Text>
+            </View>
 
-            <Text style={styles.resultText}>
-              Make: {vehicle.make}
-            </Text>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>VIN</Text>
+              <Text style={styles.detailValue}>{vehicle.vin}</Text>
+            </View>
 
-            <Text style={styles.resultText}>
-              Model: {vehicle.model}
-            </Text>
+            <View style={styles.divider} />
 
-            <Text style={styles.resultText}>
-              Year: {vehicle.year}
-            </Text>
+            <Text style={styles.sectionLabel}>VEHICLE INTELLIGENCE</Text>
+
+            <View style={styles.insightRow}>
+              <View>
+                <Text style={styles.insightTitle}>History</Text>
+                <Text style={styles.insightSubtitle}>
+                  History data will appear here.
+                </Text>
+              </View>
+              <Text style={styles.comingSoon}>SOON</Text>
+            </View>
+
+            <View style={styles.insightRow}>
+              <View>
+                <Text style={styles.insightTitle}>Inspections</Text>
+                <Text style={styles.insightSubtitle}>
+                  Inspection records will appear here.
+                </Text>
+              </View>
+              <Text style={styles.comingSoon}>SOON</Text>
+            </View>
+
+            <View style={styles.insightRow}>
+              <View>
+                <Text style={styles.insightTitle}>Market Value</Text>
+                <Text style={styles.insightSubtitle}>
+                  Understand what the vehicle is worth.
+                </Text>
+              </View>
+              <Text style={styles.comingSoon}>SOON</Text>
+            </View>
           </View>
         )}
       </View>
@@ -140,7 +175,7 @@ export default function HomeScreen() {
           Verify. Understand. Buy with confidence.
         </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -148,7 +183,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#0F172A',
     padding: 24,
   },
@@ -257,23 +292,116 @@ const styles = StyleSheet.create({
     color: '#FECACA',
   },
 
-  resultCard: {
+  profileCard: {
     marginTop: 24,
-    padding: 20,
-    borderRadius: 16,
+    padding: 22,
+    borderRadius: 20,
     backgroundColor: '#1E293B',
   },
 
-  resultTitle: {
-    marginBottom: 16,
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#FFFFFF',
+  profileHeader: {
+    alignItems: 'center',
   },
 
-  resultText: {
-    marginTop: 8,
-    fontSize: 15,
+  profileEyebrow: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    color: '#94A3B8',
+  },
+
+  vehicleName: {
+    marginTop: 14,
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+
+  vehicleYear: {
+    marginTop: 4,
+    fontSize: 16,
+    color: '#94A3B8',
+  },
+
+  registrationNumber: {
+    marginTop: 16,
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 1,
     color: '#CBD5E1',
+  },
+
+  divider: {
+    height: 1,
+    marginVertical: 22,
+    backgroundColor: '#334155',
+  },
+
+  identityHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: '#94A3B8',
+  },
+
+  verifiedLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#86EFAC',
+  },
+
+  detailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+
+  detailLabel: {
+    fontSize: 14,
+    color: '#94A3B8',
+  },
+
+  detailValue: {
+    flex: 1,
+    marginLeft: 16,
+    fontSize: 14,
+    color: '#E2E8F0',
+    textAlign: 'right',
+  },
+
+  insightRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+
+  insightTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#F8FAFC',
+  },
+
+  insightSubtitle: {
+    marginTop: 4,
+    fontSize: 13,
+    color: '#94A3B8',
+  },
+
+  comingSoon: {
+    marginLeft: 12,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
+    color: '#64748B',
   },
 });
