@@ -55,7 +55,7 @@ export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.logo}>MOTI</Text>
+        <Text style={styles.logo}>MOTII</Text>
         <Text style={styles.tagline}>
           Know What Moves You.
         </Text>
@@ -111,7 +111,7 @@ export default function HomeScreen() {
         {!isLoading && vehicle && (
           <View style={styles.profileCard}>
             <View style={styles.profileHeader}>
-              <Text style={styles.profileEyebrow}>MOTI VEHICLE PROFILE</Text>
+              <Text style={styles.profileEyebrow}>MOTII VEHICLE PROFILE</Text>
               <Text style={styles.vehicleName}>
                 {vehicle.make} {vehicle.model}
               </Text>
