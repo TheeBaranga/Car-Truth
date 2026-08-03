@@ -17,7 +17,11 @@ export default function HomeScreen() {
   const [error, setError] = useState('');
 
   const handleSearch = async () => {
+    
     const query = searchQuery.replace(/\s+/g, '').toUpperCase();
+
+    console.log("API_URL:", API_URL);
+    console.log("Query:", query);
 
     if (!query || !API_URL) {
       return;

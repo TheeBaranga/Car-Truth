@@ -15,8 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CORS_ALLOW_ALL_ORIGINS = True
 
-# Quick-start development settings - unsuitable for production
+
+# Quick-start development settings - unsuitable for productionr
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -25,7 +27,7 @@ SECRET_KEY = "django-insecure-w^_z65a+-r=w*c6#ndz6go#l_h97-y#)^+ax@fmaljex09+^8j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.0.11", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["192.168.0.11", "localhost", "127.0.0.1", "192.168.100.35", "0.0.0.0"]
 
 
 # Application definition
@@ -40,9 +42,12 @@ INSTALLED_APPS = [
 
     "vehicles",
     'rest_framework',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
