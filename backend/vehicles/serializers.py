@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Vehicle, VehicleEvent
 
+trust_score = serializers.ReadOnlyField()
 
 class VehicleEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,5 +31,8 @@ class VehicleSerializer(serializers.ModelSerializer):
             "body_type",
             "fuel_type",
             "engine_capacity",
-            "color"
+            "color",
+            "trust_score",
+            "created_at",
+            "updated_at",
         ]

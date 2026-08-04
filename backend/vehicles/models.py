@@ -1,5 +1,29 @@
 from django.db import models
 
+@property
+def trust_score(self):
+    score = 50
+
+    if self.vin:
+        score += 10
+
+    if self.color:
+        score += 5
+
+    if self.body_type:
+        score += 5
+
+    if self.fuel_type:
+        score += 5
+
+    if self.engine_capacity:
+        score += 5
+
+    if self.events.exists():
+        score += 20
+
+    return min(score, 100)
+
 class Vehicle(models.Model):
     vin = models.CharField(max_length=17, unique=True)
     registration_number = models.CharField(max_length=20, unique=True)
