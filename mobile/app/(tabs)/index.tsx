@@ -132,6 +132,16 @@ export default function HomeScreen() {
               <Text style={styles.verifiedLabel}>FOUND</Text>
             </View>
 
+            <View style={styles.scoreCard}>
+              <Text style={styles.scoreLabel}>Trust Score</Text>
+              <Text style={styles.scoreValue}>
+                {vehicle.trust_score}/100
+              </Text>
+              <Text style={styles.scoreReason}>✓ VIN Verified</Text>
+              <Text style={styles.scoreReason}>✓ Vehicle Details Available</Text>
+              <Text style={styles.scoreReason}>✓ History Records Found</Text>
+            </View>
+
             <View style={styles.detailsGrid}>
               <View style={styles.detailItem}>
                 <Text style={styles.detailLabel}>VIN</Text>
@@ -413,6 +423,34 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1,
     color: '#86EFAC',
+  },
+
+  scoreCard: {
+  backgroundColor: '#0F172A',
+  marginTop: 25,
+  padding: 20,
+  borderRadius: 16,
+  marginBottom: 20,
+  alignItems: 'center',
+  },
+
+  scoreLabel: {
+    color: '#94A3B8',
+    fontSize: 14,
+  },
+
+  scoreValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#22C55E',
+    marginTop: 8,
+  },
+
+  scoreReason: {
+  marginTop: 6,
+  fontSize: 14,
+  color: '#CBD5E1',
+  textAlign: 'center',
   },
 
   detailsGrid: {
