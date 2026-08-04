@@ -132,9 +132,31 @@ export default function HomeScreen() {
               <Text style={styles.verifiedLabel}>FOUND</Text>
             </View>
 
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>VIN</Text>
-              <Text style={styles.detailValue}>{vehicle.vin}</Text>
+            <View style={styles.detailsGrid}>
+              <View style={styles.detailItem}>
+                <Text style={styles.detailLabel}>VIN</Text>
+                <Text style={styles.detailValue}>{vehicle.vin}</Text>
+              </View>
+
+              <View style={styles.detailItem}>
+                <Text style={styles.detailLabel}>COLOR</Text>
+                <Text style={styles.detailValue}>{vehicle.color}</Text>
+              </View>
+
+              <View style={styles.detailItem}>
+                <Text style={styles.detailLabel}>BODY TYPE</Text>
+                <Text style={styles.detailValue}>{vehicle.body_type}</Text>
+              </View>
+
+              <View style={styles.detailItem}>
+                <Text style={styles.detailLabel}>FUEL TYPE</Text>
+                <Text style={styles.detailValue}>{vehicle.fuel_type}</Text>
+              </View>
+
+              <View style={styles.detailItem}>
+                <Text style={styles.detailLabel}>ENGINE CAPACITY</Text>
+                <Text style={styles.detailValue}>{vehicle.engine_capacity}</Text>
+              </View>
             </View>
 
             <View style={styles.divider} />
@@ -393,11 +415,16 @@ const styles = StyleSheet.create({
     color: '#86EFAC',
   },
 
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 16,
+  detailsGrid: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+  marginTop: 16,
+  },
+
+  detailItem: {
+    width: '48%',
+    marginBottom: 18,
   },
 
   detailLabel: {
@@ -406,12 +433,10 @@ const styles = StyleSheet.create({
   },
 
   detailValue: {
-    flex: 1,
-    marginLeft: 16,
-    fontSize: 14,
-    color: '#E2E8F0',
-    textAlign: 'right',
-  },
+  marginTop: 4,
+  fontSize: 14,
+  color: '#E2E8F0',
+},
 
   historySection: {
     marginTop: 20,
