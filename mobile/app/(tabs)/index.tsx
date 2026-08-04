@@ -45,6 +45,9 @@ export default function HomeScreen() {
       }
 
       const vehicleData = await response.json();
+
+      console.log("Vehicle Data:", vehicleData);
+
       setVehicle(vehicleData);
     } catch (error) {
       setError(
@@ -133,13 +136,15 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.scoreCard}>
-              <Text style={styles.scoreLabel}>Trust Score</Text>
-              <Text style={styles.scoreValue}>
-                {vehicle.trust_score}/100
-              </Text>
-              <Text style={styles.scoreReason}>✓ VIN Verified</Text>
-              <Text style={styles.scoreReason}>✓ Vehicle Details Available</Text>
-              <Text style={styles.scoreReason}>✓ History Records Found</Text>
+                <Text style={styles.scoreValue}>
+                  {vehicle.trust_score}/100
+                </Text>
+
+                <View style={styles.scoreReasons}>
+                  <Text style={styles.scoreReason}>✓ VIN Verified</Text>
+                  <Text style={styles.scoreReason}>✓ Vehicle Details Available</Text>
+                  <Text style={styles.scoreReason}>✓ History Records Found</Text>
+                </View>
             </View>
 
             <View style={styles.detailsGrid}>
@@ -245,6 +250,8 @@ export default function HomeScreen() {
     </ScrollView>
   );
 }
+
+
 
 
 
@@ -446,11 +453,16 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 
+  scoreReasons: {
+  marginTop: 12,
+  width: '100%',
+  },
+
   scoreReason: {
-  marginTop: 6,
-  fontSize: 14,
-  color: '#CBD5E1',
-  textAlign: 'center',
+    fontSize: 14,
+    color: '#CBD5E1',
+    marginTop: 8,
+    textAlign: 'center',
   },
 
   detailsGrid: {
@@ -564,3 +576,5 @@ const styles = StyleSheet.create({
     color: '#64748B',
   },
 });
+
+
