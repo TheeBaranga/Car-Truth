@@ -1,7 +1,12 @@
 from rest_framework import serializers
-from .models import Vehicle, VehicleEvent
+from .models import Vehicle, VehicleEvent, OwnershipRecord
 
 trust_score = serializers.ReadOnlyField()
+
+class OwnershipRecordSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = OwnershipRecord
+            fields = '__all__'
 
 class VehicleEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +22,12 @@ class VehicleEventSerializer(serializers.ModelSerializer):
 
 class VehicleSerializer(serializers.ModelSerializer):
     events = VehicleEventSerializer(many=True, read_only=True)
+    ownership_records = OwnershipRecordSerializer(
+        many=True,
+        read_only=True
+    )
+    trust_score = serializers.ReadOnlyField()
+
 
     class Meta:
         model = Vehicle
@@ -28,6 +39,7 @@ class VehicleSerializer(serializers.ModelSerializer):
             "model",
             "year",
             "events",
+            "ownership_records",
             "body_type",
             "fuel_type",
             "engine_capacity",
@@ -36,3 +48,5 @@ class VehicleSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+    

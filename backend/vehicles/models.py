@@ -73,3 +73,30 @@ class VehicleEvent(models.Model):
 
     def __str__(self):
         return f"{self.vehicle.registration_number} - {self.title}"
+
+
+class OwnershipRecord(models.Model):
+    vehicle = models.ForeignKey(
+        Vehicle,
+        on_delete=models.CASCADE,
+        related_name='ownership_records'
+    )
+
+    owner_number = models.PositiveIntegerField()
+
+    acquired_date = models.DateField()
+
+    transferred_date = models.DateField(
+        blank=True,
+        null=True
+    )
+
+    is_current_owner = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-acquired_date']
+
+    def __str__(self):
+        return f"{self.vehicle.registration_number} - Owner {self.owner_number}"

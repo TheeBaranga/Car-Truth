@@ -47,8 +47,11 @@ export default function HomeScreen() {
       const vehicleData = await response.json();
 
       console.log("Vehicle Data:", vehicleData);
+      
+      vehicleData.scoreColor = scoreColor;
 
       setVehicle(vehicleData);
+
     } catch (error) {
       setError(
         error instanceof Error
@@ -59,6 +62,12 @@ export default function HomeScreen() {
       setIsLoading(false);
     }
   };
+  const scoreColor =
+      vehicle?.trust_score >= 80
+        ? '#22C55E'
+        : vehicle?.trust_score >= 60
+        ? '#F59E0B'
+        : '#EF4444';
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
@@ -136,15 +145,19 @@ export default function HomeScreen() {
             </View>
 
             <View style={styles.scoreCard}>
-                <Text style={styles.scoreValue}>
-                  {vehicle.trust_score}/100
+              <View style={styles.scoreCircle}>
+                <Text style={[styles.scoreNumber, { color: scoreColor }]}>
+                  {vehicle.trust_score}
                 </Text>
+                <Text style={styles.scoreLabel}>/100</Text>
+              </View>
 
-                <View style={styles.scoreReasons}>
-                  <Text style={styles.scoreReason}>✓ VIN Verified</Text>
-                  <Text style={styles.scoreReason}>✓ Vehicle Details Available</Text>
-                  <Text style={styles.scoreReason}>✓ History Records Found</Text>
-                </View>
+              <View style={styles.scoreContent}>
+                <Text style={styles.scoreTitle}>Trust Score</Text>
+                <Text style={styles.scoreReason}>
+                  Vehicle records verified and matched against available history.
+                </Text>
+              </View>
             </View>
 
             <View style={styles.detailsGrid}>
@@ -250,8 +263,6 @@ export default function HomeScreen() {
     </ScrollView>
   );
 }
-
-
 
 
 
@@ -433,36 +444,59 @@ const styles = StyleSheet.create({
   },
 
   scoreCard: {
-  backgroundColor: '#0F172A',
-  marginTop: 25,
-  padding: 20,
-  borderRadius: 16,
-  marginBottom: 20,
-  alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+
+  scoreCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#E8F5E9',
+    borderWidth: 5,
+    borderColor: '#22C55E',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 18,
+  },
+
+  scoreNumber: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#16A34A',
   },
 
   scoreLabel: {
-    color: '#94A3B8',
-    fontSize: 14,
+    fontSize: 12,
+    color: '#64748B',
   },
 
-  scoreValue: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#22C55E',
-    marginTop: 8,
+  scoreContent: {
+    flex: 1,
   },
 
-  scoreReasons: {
-  marginTop: 12,
-  width: '100%',
+  scoreTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
+    marginBottom: 6,
   },
 
   scoreReason: {
     fontSize: 14,
-    color: '#CBD5E1',
-    marginTop: 8,
-    textAlign: 'center',
+    lineHeight: 20,
+    color: '#64748B',
   },
 
   detailsGrid: {
