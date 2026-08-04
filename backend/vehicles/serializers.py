@@ -27,4 +27,8 @@ class VehicleSerializer(serializers.ModelSerializer):
             "model",
             "year",
             "events",
+            "body_type",
+            "fuel_type",
+            "engine_capacity",
+            "color"
         ]

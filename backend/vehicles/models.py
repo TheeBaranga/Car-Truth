@@ -6,6 +6,14 @@ class Vehicle(models.Model):
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
+    color = models.CharField(max_length=50, blank=True)
+    body_type = models.CharField(max_length=50, blank=True)
+    fuel_type = models.CharField(max_length=50, blank=True)
+    engine_capacity = models.CharField(max_length=20, blank=True)
+    #transmission = models.CharField(max_length=50, blank=True)
+    #drive_type = models.CharField(max_length=50, blank=True)
+    #mileage = models.PositiveIntegerField(blank=True, null=True)
+    
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
