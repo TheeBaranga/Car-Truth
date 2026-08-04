@@ -44,7 +44,7 @@ class VehicleEventAdmin(admin.ModelAdmin):
 class OwnershipRecordAdmin(admin.ModelAdmin):
     list_display = (
         'vehicle',
-        'owner_number',
+        'owner_name',
         'acquired_date',
         'transferred_date',
         'is_current_owner',
@@ -59,4 +59,5 @@ class OwnershipRecordAdmin(admin.ModelAdmin):
     search_fields = (
         'vehicle__registration_number',
         'vehicle__vin',
+        'owner_name',
     )

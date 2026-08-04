@@ -47,8 +47,6 @@ export default function HomeScreen() {
       const vehicleData = await response.json();
 
       console.log("Vehicle Data:", vehicleData);
-      
-      vehicleData.scoreColor = scoreColor;
 
       setVehicle(vehicleData);
 
@@ -62,12 +60,15 @@ export default function HomeScreen() {
       setIsLoading(false);
     }
   };
+
   const scoreColor =
       vehicle?.trust_score >= 80
         ? '#22C55E'
         : vehicle?.trust_score >= 60
         ? '#F59E0B'
         : '#EF4444';
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
@@ -155,6 +156,9 @@ export default function HomeScreen() {
               <View style={styles.scoreContent}>
                 <Text style={styles.scoreTitle}>Trust Score</Text>
                 <Text style={styles.scoreReason}>
+                  {vehicle.ownership_records?.length || 0} ownership records found
+                </Text> 
+                <Text style={styles.scoreReason}>
                   Vehicle records verified and matched against available history.
                 </Text>
               </View>
@@ -212,7 +216,7 @@ export default function HomeScreen() {
                       <Text style={styles.historyEventDate}>
                         {new Date(event.event_date).toLocaleDateString('en-GB', {
                           day: 'numeric',
-                          month: 'long',
+                          month: 'short',
                           year: 'numeric',
                         })}
                       </Text>
@@ -231,6 +235,61 @@ export default function HomeScreen() {
                 </Text>
               )}
             </View>
+
+            <View style={styles.divider} />
+              <Text style={styles.sectionLabel}>OWNERSHIP HISTORY</Text>
+
+              <View style={styles.historySection}>
+                {vehicle.ownership_records?.length > 0 ? (
+                  vehicle.ownership_records.map((record: any, index: number) => (
+                    <View key={record.id} style={styles.timelineEvent}>
+                      <View style={styles.timelineMarkerColumn}>
+                        <View style={styles.timelineMarker} />
+                        {index < vehicle.ownership_records.length - 1 && (
+                          <View style={styles.timelineConnector} />
+                      )}
+                      </View>
+
+                      <View style={styles.timelineContent}>
+                        <Text style={styles.timelineEventType}>
+                          OWNER #{record.owner_name}
+                        </Text>
+
+                        <Text style={styles.historyEventTitle}>
+                          {record.is_current_owner ? 'Current Owner' : 'Previous Owner'}
+                        </Text>
+
+                        <Text style={styles.historyEventDate}>
+                          {new Date(record.acquired_date).toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                          {record.transferred_date
+                            ? ` → ${new Date(record.transferred_date).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                              })}`
+                            : ' → Present'}
+                        </Text>
+
+                        {record.is_current_owner && (
+                          <View style={styles.currentOwnerBadge}>
+                            <Text style={styles.currentOwnerText}>
+                              CURRENT OWNER
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  ))
+                ) : (
+                  <Text style={styles.insightSubtitle}>
+                    No ownership records available.
+                  </Text>
+                )}
+              </View>
 
             <View style={styles.insightRow}>
               <View>
@@ -497,6 +556,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: '#64748B',
+  },
+
+  currentOwnerBadge: {
+  alignSelf: 'flex-start',
+  marginTop: 8,
+  backgroundColor: 'rgba(34,197,94,0.15)',
+  paddingHorizontal: 10,
+  paddingVertical: 4,
+  borderRadius: 20,
+  },
+
+  currentOwnerText: {
+    color: '#22C55E',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
 
   detailsGrid: {

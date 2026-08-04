@@ -82,14 +82,11 @@ class OwnershipRecord(models.Model):
         related_name='ownership_records'
     )
 
-    owner_number = models.PositiveIntegerField()
+    owner_name = models.CharField(max_length=255)
 
     acquired_date = models.DateField()
 
-    transferred_date = models.DateField(
-        blank=True,
-        null=True
-    )
+    transferred_date = models.DateField(null=True, blank=True)
 
     is_current_owner = models.BooleanField(default=False)
 
@@ -99,4 +96,7 @@ class OwnershipRecord(models.Model):
         ordering = ['-acquired_date']
 
     def __str__(self):
-        return f"{self.vehicle.registration_number} - Owner {self.owner_number}"
+
+        return f"{self.owner_name} - {self.vehicle.registration_number}"
+
+    
