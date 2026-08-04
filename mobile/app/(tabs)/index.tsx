@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
 },
 
   historySection: {
-    marginTop: 20,
+    marginTop: 5,
   },
 
   timelineEvent: {
