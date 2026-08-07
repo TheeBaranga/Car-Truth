@@ -257,7 +257,7 @@ export default function HomeScreen() {
 
                     <View style={styles.timelineContent}>
                       <Text style={styles.timelineEventType}>
-                        OWNER #{record.owner_name}
+                        OWNER #{record.owner}
                       </Text>
 
                       <Text style={styles.historyEventTitle}>
@@ -296,45 +296,44 @@ export default function HomeScreen() {
               )}
             </View>
 
-            <View style={styles.insightRow}>
-              <View>
-                <Text style={styles.insightTitle}>Inspections</Text>
-                {vehicle.inspections?.length > 0 ? (
-                  vehicle.inspections.map((inspection: any) => (
-                    <View key={inspection.id} style={styles.timelineEvent}>
-                      <View style={styles.timelineMarkerColumn}>
-                        <View style={styles.timelineMarker} />
-                      </View>
+            <View style={styles.historySection}>
+              <Text style={styles.sectionLabel}>INSPECTIONS</Text>
 
-                      <View style={styles.timelineContent}>
-                        <Text style={styles.historyEventTitle}>
-                          {inspection.result}
-                        </Text>
+              {vehicle.inspections?.length > 0 ? (
+                vehicle.inspections.map((inspection: any, index: number) => (
+                  <View key={inspection.id} style={styles.timelineEvent}>
+                    <View style={styles.timelineMarkerColumn}>
+                      <View style={styles.timelineMarker} />
 
-                        <Text style={styles.historyEventDate}>
-                          {new Date(inspection.inspection_date).toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </Text>
-
-                        <Text style={styles.insightSubtitle}>
-                          Mileage: {inspection.mileage.toLocaleString()} km
-                        </Text>
-
-                        <Text style={styles.historyEventSource}>
-                          {inspection.inspection_center}
-                        </Text>
-                      </View>
+                      {index < vehicle.inspections.length - 1 && (
+                        <View style={styles.timelineConnector} />
+                      )}
                     </View>
-                  ))
-                ) : (
-                  <Text style={styles.insightSubtitle}>
-                    No inspection records available.
-                  </Text>
-                )}
-              </View>
+
+                    <View style={styles.timelineContent}>
+                      <Text style={styles.historyEventTitle}>
+                        {inspection.result}
+                      </Text>
+
+                      <Text style={styles.historyEventDate}>
+                        {new Date(inspection.inspection_date).toLocaleDateString('en-GB')}
+                      </Text>
+
+                      <Text style={styles.insightSubtitle}>
+                        Mileage: {inspection.mileage?.toLocaleString()} km
+                      </Text>
+
+                      <Text style={styles.historyEventSource}>
+                        {inspection.inspection_center}
+                      </Text>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text style={styles.insightSubtitle}>
+                  No inspection records available.
+                </Text>
+              )}
             </View>
 
             <View style={styles.insightRow}>
@@ -636,6 +635,7 @@ const styles = StyleSheet.create({
 
   historySection: {
     marginTop: 5,
+    marginBottom: 20,
   },
 
   timelineEvent: {

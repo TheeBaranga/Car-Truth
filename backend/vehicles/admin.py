@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vehicle, VehicleEvent, OwnershipRecord
+from .models import Vehicle, VehicleEvent, OwnershipRecord, InspectionRecord
 
 
 @admin.register(Vehicle)
@@ -44,7 +44,7 @@ class VehicleEventAdmin(admin.ModelAdmin):
 class OwnershipRecordAdmin(admin.ModelAdmin):
     list_display = (
         'vehicle',
-        'owner_name',
+        'owner',
         'acquired_date',
         'transferred_date',
         'is_current_owner',
@@ -59,5 +59,26 @@ class OwnershipRecordAdmin(admin.ModelAdmin):
     search_fields = (
         'vehicle__registration_number',
         'vehicle__vin',
-        'owner_name',
+        'owner',
+    )
+
+
+@admin.register(InspectionRecord)
+class InspectionRecordAdmin(admin.ModelAdmin):
+    list_display = (
+        "vehicle",
+        "inspection_date",
+        "result",
+        "mileage",
+        "inspection_center",
+    )
+
+    list_filter = (
+        "result",
+        "inspection_date",
+    )
+
+    search_fields = (
+        "vehicle__registration_number",
+        "inspection_center",
     )

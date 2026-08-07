@@ -82,7 +82,7 @@ class OwnershipRecord(models.Model):
         related_name='ownership_records'
     )
 
-    owner_name = models.CharField(max_length=255)
+    owner = models.CharField(max_length=255)
 
     acquired_date = models.DateField()
 
@@ -97,7 +97,7 @@ class OwnershipRecord(models.Model):
 
     def __str__(self):
 
-        return f"{self.owner_name} - {self.vehicle.registration_number}"
+        return f"{self.owner} - {self.vehicle.registration_number}"
 
 
 class InspectionRecord(models.Model):
