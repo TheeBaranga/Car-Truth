@@ -99,4 +99,18 @@ class OwnershipRecord(models.Model):
 
         return f"{self.owner_name} - {self.vehicle.registration_number}"
 
-    
+
+class InspectionRecord(models.Model):
+    vehicle = models.ForeignKey(
+        Vehicle,
+        on_delete=models.CASCADE,
+        related_name="inspections"
+    )
+
+    inspection_date = models.DateField()
+    result = models.CharField(max_length=20)
+    mileage = models.PositiveIntegerField()
+    inspection_center = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ["-inspection_date"]
